@@ -8,30 +8,37 @@
 </head>
 <body>
     <h2>Shipping Address</h2>
-    <form action="/getQuotation" method="post">
-        <table>
-            <tr>
-                <td>Name:</td>
-                <td>
-                    <input type="text" name="name">
-                </td>
-            </tr>
-            <tr>
-                <td>Address:</td>
-                <td>
-                    <input type="text" name="address">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="submit" formaction="/" formmethod="get">Back</button>
-                </td>
-                <td>
-                    <button type="submit">Checkout</button>
-                </td>
-            </tr>
-        </table>
-
+    <form th:action="@{/getQuotation}" method="post">
+        <div th:object="${shipping}">
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td>
+                        <input type="text" th:field="*{name}" >
+                    </td>
+                    <td th:if="${#fields.hasErrors('name')}">
+                        <span th:errors="*{name}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td>
+                        <input type="text" th:field="*{address}">
+                    </td>
+                    <td th:if="${#fields.hasErrors('address')}">
+                        <span th:errors="*{address}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" formaction="/" formmethod="get">Back</button>
+                    </td>
+                    <td>
+                        <button type="submit">Checkout</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </form>
 
 </body>

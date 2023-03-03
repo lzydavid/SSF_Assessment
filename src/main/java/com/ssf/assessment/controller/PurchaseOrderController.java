@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ssf.assessment.model.Checkout;
 import com.ssf.assessment.model.Item;
@@ -42,12 +41,10 @@ public class PurchaseOrderController {
     }
 
     @PostMapping(path = "/additem")
-    public String addItem(@Valid Item items,HttpSession session,BindingResult result) {
-
-        System.out.println(items);
+    public String addItem(@Valid Item items,BindingResult result,HttpSession session) {
 
         if(result.hasErrors()){
-            return "view1";
+            return "redirect:/";
         }
        
         scSvc.addItem(items);
@@ -63,10 +60,10 @@ public class PurchaseOrderController {
     }
 
     @PostMapping(path = "/getQuotation")
-    public String getQuotation(@Valid ShippingAddress shipping,HttpSession session,Model model,BindingResult result) {
+    public String getQuotation(@Valid ShippingAddress shipping,BindingResult result,HttpSession session,Model model) {
 
         if(result.hasErrors()){
-            return "view2";
+            return "redirect:/shippingaddress";
         }
 
         List<Item> list = (List<Item>) session.getAttribute("cart");
@@ -79,7 +76,11 @@ public class PurchaseOrderController {
         Float total = qService.getTotal(list, q);
         checkout.setTotal(total);
 
+        System.out.println(qService.getSet(list));
+
         model.addAttribute("checkout", checkout);
+
+        session.invalidate();
 
         return "view3";
     }

@@ -7,7 +7,7 @@ public class Item {
     private String item;
     
     @Min(value = 1,message = "You must add at least 1 item")
-    private String quantity;
+    private int quantity;
     
     public Item() {
     }
@@ -20,11 +20,11 @@ public class Item {
         this.item = item;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

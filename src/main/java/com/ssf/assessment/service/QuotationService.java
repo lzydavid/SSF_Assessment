@@ -3,8 +3,10 @@ package com.ssf.assessment.service;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import com.ssf.assessment.model.Quotation;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
@@ -33,6 +36,8 @@ public class QuotationService {
 
     public Quotation geQuotation(List<Item> items){
 
+        Set<String> listOfItem = getSet(items);
+
         Quotation quotation = new Quotation();
 
         String url = UriComponentsBuilder.fromUriString(URL).toUriString();
@@ -40,10 +45,14 @@ public class QuotationService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        JsonArray array = Json.createArrayBuilder().add("apple").add("orange").build();
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+                for (String element : listOfItem) {
+                    arrayBuilder.add(element);
+                }
+        JsonArray jsonArray = arrayBuilder.build();
+        String jsonArrayString = jsonArray.toString();
         
-        // RequestEntity<Void> requestEntity = new RequestEntity<JsonArray>(array, headers, HttpMethod.POST, URL, getClass());
-
+        //RequestEntity<Void> requestEntity = new RequestEntity<Void>(jsonArrayString, HttpMethod.POST, URL)
         RequestEntity<Void> req = RequestEntity.get(url)
 				.accept(MediaType.APPLICATION_JSON)
 				.build();
@@ -90,10 +99,23 @@ public class QuotationService {
         float total=0.0f;
 
         for (Item item : items) {
-            int quantity = Integer.parseInt(item.getQuantity());
+            int quantity = item.getQuantity();
             total+=((q.getQuotation(item.getItem()))*quantity);
         }
 
         return total;
+    }
+
+    public Set<String> getSet(List<Item> items){
+
+        Set<String> set = new HashSet<>();
+
+        for (Item item : items) {
+            String str =item.getItem();
+            if(!set.contains(str)){
+                set.add(str);
+            }
+        }
+        return set;
     }
 }

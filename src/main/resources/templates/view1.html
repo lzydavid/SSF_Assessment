@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>View 1</title>
+		<title>Cart</title>
 	</head>
 	<body>
 		<!--
@@ -33,6 +33,9 @@
 						<td>Quantity:</td>
 						<td>
 							<input type="number" name="quantity" size="4" placeholder="Quantity" th:field="*{quantity}">
+						</td>
+						<td th:if="${#fields.hasErrors('quantity')}">
+							<span th:errors="*{quantity}"></span>
 						</td>
 					</tr>
 				</table>
