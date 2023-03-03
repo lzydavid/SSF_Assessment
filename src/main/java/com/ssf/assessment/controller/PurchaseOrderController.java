@@ -1,6 +1,5 @@
 package com.ssf.assessment.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +53,11 @@ public class PurchaseOrderController {
     }
 
     @GetMapping(path = "/shippingaddress")
-    public String getShipping(Model model) {
+    public String getShipping(Model model,HttpSession session) {
         model.addAttribute("shipping", new ShippingAddress());
+        if(session.getAttribute("cart")==null){
+            return "redirect:/";
+        }
         return "view2";
     }
 

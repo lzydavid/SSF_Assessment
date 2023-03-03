@@ -45,8 +45,4 @@ public class Checkout {
     public void setTotal(float total) {
         this.total = total;
     }
-
-    
-
-    
 }
